@@ -1,0 +1,10 @@
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ..., {
+  content: "single page app does not reload the whole page",
+  date: "2019-05-25T15:15:59.905Z"
+}]
+
+note over browser:
+browser starts executing js-code
+that prevents reload, defines note object, pushes new note into notes, sets input to "", rerenders the note list on the page and sends the new note to the server.
+end note

@@ -1,4 +1,8 @@
 browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note
+server-->browser: HTML-code
+
+comment:
+
 server-->browser: HTTP status code 302: URL redirect. The server asks the browser to do a new HTTP GET request to the address defined in the header's Location, which in this case is "/exampleapp/notes"
 
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
@@ -14,10 +18,12 @@ that requests JSON data from server
 end note
 
 browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/data.json
-server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ..., newNote]
+server-->browser: [{ content: "HTML is easy", date: "2019-05-23" }, ..., {
+  content: req.body.note,
+  date: new Date(),
+}]
 
 note over browser:
 browser executes the event handler
 that renders notes to display
 end note
-Create
