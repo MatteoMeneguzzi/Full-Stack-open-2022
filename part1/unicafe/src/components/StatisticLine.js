@@ -1,9 +1,14 @@
 const Button = ({ value, text }) => {
   return (
     <>
-      <div>
-        {text} {value}
-      </div>
+      <table>
+        <tbody>
+          <tr>
+            <td style={{ width: "50px" }}>{text}</td>
+            <td>{value}</td>
+          </tr>
+        </tbody>
+      </table>
     </>
   );
 };

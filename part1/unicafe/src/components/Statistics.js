@@ -11,7 +11,7 @@ const Statistics = (props) => {
 
   const average = (good * top + neutral * medium + bad * low) / total;
 
-  const positive = (good * 100) / total;
+  const positive = (good * 100) / total + " %";
 
   return (
     <>
@@ -23,7 +23,7 @@ const Statistics = (props) => {
           <StatisticLine text='bad' value={bad} />
           <StatisticLine text='all' value={total} />
           <StatisticLine text='average' value={average} />
-          <StatisticLine text={`positive ${positive} %`} />
+          <StatisticLine text='positive' value={positive} />
         </>
       ) : (
         <div>No feedback given</div>
