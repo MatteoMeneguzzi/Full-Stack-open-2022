@@ -1,3 +1,4 @@
+import { logDOM } from "@testing-library/react";
 import { useState } from "react";
 
 const App = () => {
@@ -12,6 +13,9 @@ const App = () => {
   ];
 
   const [selected, setSelected] = useState(0);
+  let [points, setPoints] = useState(
+    new Array(7 + 1).join("0").split("").map(parseFloat)
+  );
 
   const generateRandom = (min, max) => {
     min = Math.ceil(min);
@@ -24,9 +28,17 @@ const App = () => {
     setSelected(random);
   };
 
+  const vote = () => {
+    let copy = [...points];
+    copy[selected]++;
+    setPoints(copy);
+  };
+
   return (
     <>
       <div>{anecdotes[selected]}</div>
+      <div>has {points[selected]} points</div>
+      <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
     </>
   );
