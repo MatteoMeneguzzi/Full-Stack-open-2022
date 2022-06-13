@@ -28,18 +28,39 @@ const App = () => {
     setSelected(random);
   };
 
+  let copy = [...points];
+
   const vote = () => {
-    let copy = [...points];
     copy[selected]++;
     setPoints(copy);
   };
 
+  const maxValue = (arr) => {
+    let max = arr[0];
+
+    for (let val of arr) {
+      if (val > max) {
+        max = val;
+      }
+    }
+    return max;
+  };
+
+  const findTopAnecdote = (element) => element === maxValue(points);
+
+  const topAnecdote = points.findIndex(findTopAnecdote);
+
   return (
     <>
+      <h2>Anecdote of the day</h2>
       <div>{anecdotes[selected]}</div>
-      <div>has {points[selected]} points</div>
+      <div>has {points[selected]} votes</div>
+
       <button onClick={vote}>vote</button>
       <button onClick={nextAnecdote}>next anecdote</button>
+      <h2>Anecdote with most votes</h2>
+      {anecdotes[topAnecdote]}
+      <div>has {maxValue(points)} votes</div>
     </>
   );
 };
