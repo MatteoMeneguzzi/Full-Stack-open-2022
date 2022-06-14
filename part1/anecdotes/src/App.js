@@ -1,4 +1,3 @@
-import { logDOM } from "@testing-library/react";
 import { useState } from "react";
 
 const App = () => {
@@ -50,6 +49,16 @@ const App = () => {
 
   const topAnecdote = points.findIndex(findTopAnecdote);
 
+  // let orders = [
+  //   { amount: 250 },
+  //   { amount: 150 },
+  //   { amount: 50 },
+  //   { amount: 100 },
+  // ];
+
+  // let totalAmount = orders.reduce((sum, order) => sum + order.amount, 0);
+
+  let people = [{ amount: 250 }, { amount: 150 }];
   return (
     <>
       <h2>Anecdote of the day</h2>
