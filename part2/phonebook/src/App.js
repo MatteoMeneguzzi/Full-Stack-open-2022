@@ -13,10 +13,19 @@ const App = () => {
     e.preventDefault();
 
     const newPersons = [...persons];
-    setPersons([...newPersons, { name: newName }]);
+
+    const currentName = { name: newName };
+
+    if (newPersons.filter((e) => e.name === currentName.name).length > 0) {
+      alert(`${newName} is already added to phonebook`);
+    } else {
+      setPersons([...newPersons, currentName]);
+    }
   };
 
-  const personsList = persons.map((person) => <div>{person.name}</div>);
+  const personsList = persons.map((person, index) => (
+    <div key={index}>{person.name}</div>
+  ));
 
   return (
     <div>
