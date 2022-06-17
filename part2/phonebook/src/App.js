@@ -44,18 +44,43 @@ const App = () => {
 
     const newPersons = [...persons];
 
-    const currentPerson = { name: newName, number: newNumber };
+    const currentPerson = {
+      name: newName,
+      number: newNumber,
+      id: new Date(),
+    };
 
     if (currentPerson.name === "") {
       return;
     } else if (
       newPersons.filter((e) => e.name === currentPerson.name).length > 0
     ) {
-      alert(`${newName} is already added to phonebook`);
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        let person = newPersons.find(
+          (person) => person.name === currentPerson.name
+        );
+
+        personService
+          .update(person.id, currentPerson)
+          .then((updatedPerson) =>
+            setPersons(
+              newPersons.map((item) =>
+                item.id === person.id ? updatedPerson : item
+              )
+            )
+          )
+          .catch((err) => {
+            alert(`${person.content} was already deleted from server`);
+            setPersons(newPersons.filter((item) => item.id !== person.id));
+          });
+      }
     } else {
-      personService.create(currentPerson).then((res) => {
-        let updatedPersons = persons.concat(res.data);
-        setPersons(updatedPersons);
+      personService.create(currentPerson).then((person) => {
+        setPersons([...newPersons, person]);
       });
     }
   };
@@ -72,7 +97,7 @@ const App = () => {
   };
 
   useEffect(() => {
-    personService.getAll().then((res) => setPersons(res.data));
+    personService.getAll().then((initialPersons) => setPersons(initialPersons));
   }, []);
 
   return (
