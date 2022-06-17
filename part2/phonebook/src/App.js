@@ -14,6 +14,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
   const [successMessage, setSuccessMessage] = useState();
+  const [errorMessage, setErrorMessage] = useState();
 
   const handleName = (e) => {
     const { value } = e.target;
@@ -75,11 +76,15 @@ const App = () => {
               )
             );
             setSuccessMessage(`${person.name}'s number is updated`);
+
             setTimeout(() => setSuccessMessage(``), 3000);
           })
           .catch((err) => {
-            alert(`${person.name} was already deleted from server`);
+            setErrorMessage(
+              `Information of ${person.name} has already been removed from server`
+            );
             setPersons(newPersons.filter((item) => item.id !== person.id));
+            setTimeout(() => setErrorMessage(``), 3000);
           });
       }
     } else {
@@ -111,7 +116,10 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
-      <Notification message={successMessage} />
+      <Notification
+        successMessage={successMessage}
+        errorMessage={errorMessage}
+      />
       <Filter search={search} handleSearch={handleSearch} />
       <PersonForm
         newName={newName}
