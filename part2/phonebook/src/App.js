@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Filter from "./components/Filter";
 import PersonForm from "./components/PersonForm";
 import Persons from "./components/Persons";
+import Notification from "./components/Notification";
 
 import personService from "./services/persons";
 
@@ -12,6 +13,7 @@ const App = () => {
   const [newName, setNewName] = useState("");
   const [newNumber, setNewNumber] = useState("");
   const [search, setSearch] = useState("");
+  const [successMessage, setSuccessMessage] = useState();
 
   const handleName = (e) => {
     const { value } = e.target;
@@ -66,21 +68,25 @@ const App = () => {
 
         personService
           .update(person.id, currentPerson)
-          .then((updatedPerson) =>
+          .then((updatedPerson) => {
             setPersons(
               newPersons.map((item) =>
                 item.id === person.id ? updatedPerson : item
               )
-            )
-          )
+            );
+            setSuccessMessage(`${person.name}'s number is updated`);
+            setTimeout(() => setSuccessMessage(``), 3000);
+          })
           .catch((err) => {
-            alert(`${person.content} was already deleted from server`);
+            alert(`${person.name} was already deleted from server`);
             setPersons(newPersons.filter((item) => item.id !== person.id));
           });
       }
     } else {
       personService.create(currentPerson).then((person) => {
         setPersons([...newPersons, person]);
+        setSuccessMessage(`${person.name}'s submission successful`);
+        setTimeout(() => setSuccessMessage(``), 3000);
       });
     }
   };
@@ -92,6 +98,8 @@ const App = () => {
       personService.drop(id).then(() => {
         const updatedPersons = persons.filter((person) => person.id !== id);
         setPersons(updatedPersons);
+        setSuccessMessage(`${person.name} successfully deleted`);
+        setTimeout(() => setSuccessMessage(``), 3000);
       });
     }
   };
@@ -103,6 +111,7 @@ const App = () => {
   return (
     <>
       <h2>Phonebook</h2>
+      <Notification message={successMessage} />
       <Filter search={search} handleSearch={handleSearch} />
       <PersonForm
         newName={newName}
