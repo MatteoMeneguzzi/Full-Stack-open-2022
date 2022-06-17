@@ -31,6 +31,14 @@ const App = () => {
     setSearch(value);
   };
 
+  const filteredData = persons.filter((person) => {
+    if (search === "") {
+      return person;
+    } else {
+      return person.name.toLowerCase().includes(search.toLowerCase());
+    }
+  });
+
   const addUser = (e) => {
     e.preventDefault();
 
@@ -52,13 +60,16 @@ const App = () => {
     }
   };
 
-  const filteredData = persons.filter((person) => {
-    if (search === "") {
-      return person;
-    } else {
-      return person.name.toLowerCase().includes(search.toLowerCase());
+  const deleteUser = (id) => {
+    const person = persons.find((person) => person.id === id);
+
+    if (window.confirm(`Delete ${person.name} ?`)) {
+      personService.drop(id).then(() => {
+        const updatedPersons = persons.filter((person) => person.id !== id);
+        setPersons(updatedPersons);
+      });
     }
-  });
+  };
 
   useEffect(() => {
     personService.getAll().then((res) => setPersons(res.data));
@@ -76,7 +87,7 @@ const App = () => {
         addUser={addUser}
       />
       <h2>Numbers</h2>
-      <Persons filteredData={filteredData} />
+      <Persons filteredData={filteredData} deleteUser={deleteUser} />
     </>
   );
 };
